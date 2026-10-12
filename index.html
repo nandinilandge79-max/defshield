@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head><title>Defshield</title></head>
+<body style="font-family: Arial; padding: 20px;">
+    <h2>Defshield Mental Health Screening</h2>
+    <textarea id="q1" rows="2" style="width:100%;" placeholder="Enter your response for Q1..."></textarea><br><br>
+    <textarea id="q2" rows="2" style="width:100%;" placeholder="Enter your response for Q2..."></textarea><br><br>
+    <button onclick="submitSurvey()" style="padding: 10px 20px;">Generate Report</button>
+    <h3>AI Report:</h3>
+    <p id="result" style="white-space: pre-wrap; background: #f4f4f4; padding: 10px;"></p>
+
+    <script>
+        async function submitSurvey() {
+            const ans = [document.getElementById('q1').value, document.getElementById('q2').value];
+            document.getElementById('result').innerText = "Generating report using open-weight AI...";
+            const response = await fetch('http://localhost:5000/api/assess', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({answers: ans})
+            });
+            const data = await response.json();
+            document.getElementById('result').innerText = data.report;
+        }
+    </script>
+</body>
+</html>
